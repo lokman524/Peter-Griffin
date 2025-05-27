@@ -36,24 +36,25 @@ public class DialogueService {
                 .buildClient();
 
         List<ChatRequestMessage> chatMessages = Arrays.asList(
-                new ChatRequestSystemMessage("You are a helpful assistant."),
-                new ChatRequestUserMessage("Tell me 3 jokes about trains")
+                new ChatRequestSystemMessage(prompt.getPromptSettings()),
+                new ChatRequestUserMessage(prompt.getPromptContent())
         );
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setModel(model);
 
+        //Faced a problem where it was showing 401 unauthorized. FIXED: fuckhead didnt say we should use beta 5 of azure
         ChatCompletions completions = client.complete(chatCompletionsOptions);
 
-        System.out.printf("%s.%n", completions.getChoices().get(0).getMessage().getContent());
+        String resultingText = completions.getChoices().get(0).getMessage().getContent();
 
-//        System.out.printf("%s.%n", resultingText);
+        System.out.printf("%s.%n", resultingText);
 
-//        for (String i : resultingText.split("/")){
-//            dialogues.add(i);
-//        }
+        List<String> dialogues = new ArrayList<>();
 
-        return null;
+        dialogues.addAll(Arrays.asList(resultingText.split("/")));
+
+        return dialogues;
 
     }
 
