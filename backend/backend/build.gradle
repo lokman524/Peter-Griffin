@@ -21,6 +21,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// https://mvnrepository.com/artifact/com.azure/azure-ai-inference
+	implementation("com.azure:azure-ai-inference:1.0.0-beta.1")
 }
 
 tasks.named('test') {

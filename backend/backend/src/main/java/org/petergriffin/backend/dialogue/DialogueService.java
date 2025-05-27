@@ -1,19 +1,59 @@
 package org.petergriffin.backend.dialogue;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import com.azure.ai.inference.ChatCompletionsClient;
+import com.azure.ai.inference.ChatCompletionsClientBuilder;
+import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatRequestMessage;
+import com.azure.ai.inference.models.ChatRequestSystemMessage;
+import com.azure.ai.inference.models.ChatRequestUserMessage;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
+
+
+import org.petergriffin.backend.prompt.Prompt;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DialogueService {
 
-    public List<String> GenerateDialogues(String prompt){
-        List<String> dialogues = new ArrayList<String>();
+    @Value("${app.api.github-token}")
+    private String key;
 
-        //TODO: Result should be fetched from API call to Gemini and parsed to seperated array elements
-        dialogues.add("Dialogues!!!!!");
-        return dialogues;
+    public List<String> GenerateDialogues(Prompt prompt){
+
+        String endpoint = "https://models.github.ai/inference";
+        String model = "openai/gpt-4o-mini";
+
+        ChatCompletionsClient client = new ChatCompletionsClientBuilder()
+                .credential(new AzureKeyCredential(key))
+                .endpoint(endpoint)
+                .buildClient();
+
+        List<ChatRequestMessage> chatMessages = Arrays.asList(
+                new ChatRequestSystemMessage("You are a helpful assistant."),
+                new ChatRequestUserMessage("Tell me 3 jokes about trains")
+        );
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+        chatCompletionsOptions.setModel(model);
+
+        ChatCompletions completions = client.complete(chatCompletionsOptions);
+
+        System.out.printf("%s.%n", completions.getChoices().get(0).getMessage().getContent());
+
+//        System.out.printf("%s.%n", resultingText);
+
+//        for (String i : resultingText.split("/")){
+//            dialogues.add(i);
+//        }
+
+        return null;
 
     }
 
