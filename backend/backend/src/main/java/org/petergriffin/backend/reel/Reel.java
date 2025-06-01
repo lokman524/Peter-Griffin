@@ -7,13 +7,14 @@ import java.util.List;
 public class Reel {
 
     private List<String> dialogues = new ArrayList<String>();
-//    private final voice
+    private List<String> Voices = new ArrayList<String>();
 //    private final video
 
 
     //Constructor
-    public Reel(List<String> dialogues) {
+    public Reel(List<String> dialogues, List<String> voices) {
         this.dialogues = dialogues;
+        this.Voices = voices;
     }
 
     //Getters and Setters
@@ -25,4 +26,11 @@ public class Reel {
         this.dialogues = dialogues;
     }
 
+    public List<String> getVoices() {
+        return Voices;
+    }
+
+    public void setVoices(List<String> voices) {
+        Voices = voices;
+    }
 }

@@ -5,6 +5,8 @@ import org.petergriffin.backend.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(path = "api/v1/reel")
 public class ReelController {
@@ -17,7 +19,7 @@ public class ReelController {
     }
 
     @PostMapping(path = "/generate_reel")
-    public Reel generateReel(@RequestBody Prompt prompt) {
+    public Reel generateReel(@RequestBody Prompt prompt) throws IOException {
         Reel result = reelService.createReel(prompt); //Notes be received from the body of the API call
         return result;
     }

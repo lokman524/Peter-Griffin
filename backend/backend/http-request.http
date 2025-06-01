@@ -1,0 +1,29 @@
+
+POST http://localhost:8080/api/v1/reel/generate_reel
+Content-Type: application/json
+
+{
+  "promptContent": "Biology 101: mitochonrdria is the powerhouse of the cell",
+  "promptSettings": ""
+}
+
+<> 2025-05-27T210516.200.json
+<> 2025-05-27T210458.200.json
+<> 2025-05-27T205948.200.json
+<> 2025-05-27T205731.500.json
+<> 2025-05-27T205720.500.json
+<> 2025-05-27T205659.500.json
+<> 2025-05-27T205500.500.json
+<> 2025-05-27T205216.500.json
+<> 2025-05-27T204735.500.json
+<> 2025-05-27T204702.500.json
+<> 2025-05-27T203124.500.json
+<> 2025-05-27T191328.500.json
+<> 2025-05-27T191049.500.json
+
+
+###
+
+GET http://[::1]:5002/api/tts?text=Hello,%20this%20is%20your%20mom!&speaker_id=p374&style_wav=&language_id= HTTP/1.1"
+
+###
