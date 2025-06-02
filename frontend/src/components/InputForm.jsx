@@ -1,6 +1,9 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./InputForm.css";
 import Loading from "./Loading";
+import * as pdfjsLib from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
 
 function InputForm() {
   const [paragraph, setParagraph] = useState("");
@@ -8,19 +11,46 @@ function InputForm() {
   const [submittedData, setSubmittedData] = useState(null);
   const [submitMessage, setSubmitMessage] = useState("");
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [fileUrl, setFileUrl] = useState(null);
 
   function handleParagraphChange(e) {
     setParagraph(e.target.value);
   }
 
   function handleFileChange(e) {
-    const file = e.target.files;
+    const file = e.target.files[0];
     if (file) {
-        setFileContent(file)
+      setFileContent(file);
+      const url = URL.createObjectURL(file);
+      setFileUrl(url);
+    } else {
+      setFileContent(null);
     }
-    else
-        setFileContent(null);
-    
+  }
+
+  function extractText (pdfUrl){
+    var pdf = pdfjsLib.getDocument(pdfUrl);
+    return pdf.promise.then(function (pdf){
+        let totalPageCount = pdf.numPages;
+        let countPromises = [];
+        for (let currentPage = 1; currentPage <= totalPageCount; currentPage++){
+          let page = pdf.getPage(currentPage);
+          countPromises.push(
+            page.then(function (page){
+              let textContent = page.getTextContent();
+              return textContent.then(function (text){
+                return text.items.map(function (s){
+                  return s.str;
+                })
+                .join('');
+              });
+            }),
+          );
+        }
+        return Promise.all(countPromises).then(function (texts){
+          return texts.join('');
+        });
+      });
   }
 
   function handleSubmit(e) {
@@ -29,25 +59,32 @@ function InputForm() {
       setSubmitMessage("Please enter a paragraph or a file before submitting.");
       return;
     }
-
     setSubmittedData({
       paragraph,
       fileContent,
     });
-
     setSubmitMessage("Form submitted successfully!");
     setIsFormSubmitted(true);
   }
 
+
   useEffect(() => {
     if (submittedData) {
       console.log("Submitted Data:", submittedData);
+      console.log("file url:" + fileUrl);
+      extractText(fileUrl).then(
+        function (text) {
+          console.log('Extracted text:\n' + text);
+        },
+        function (reason) {
+          console.error(reason);
+        },
+      );
     }
-  }, [submittedData]);
+  }, [submittedData,fileUrl]);
 
-  if (isFormSubmitted){
-    return (<Loading />);
-  }
+  // Uncomment this if you want to show a loading component after submission
+  // if (isFormSubmitted) { return (<Loading />); }
 
   return (
     <div className="container">
