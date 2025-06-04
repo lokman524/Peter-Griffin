@@ -12,6 +12,14 @@
     align-items: center;
     padding: 20px;
   }
+  .app-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
   .container {
     background: white;
     max-width: 600px;
@@ -72,6 +80,12 @@
   }
   button:hover {
     background: #27ae60;
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 20px 25px;
+    }
   }
 
   @media (max-width: 480px) {
