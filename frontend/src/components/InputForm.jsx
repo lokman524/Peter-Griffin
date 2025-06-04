@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./InputForm.css";
 import Loading from "./Loading";
+import Quiz from "./Quiz";
 import * as pdfjsLib from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
@@ -71,20 +72,35 @@ function InputForm() {
   useEffect(() => {
     if (submittedData) {
       console.log("Submitted Data:", submittedData);
-      console.log("file url:" + fileUrl);
-      extractText(fileUrl).then(
-        function (text) {
-          console.log('Extracted text:\n' + text);
-        },
-        function (reason) {
-          console.error(reason);
-        },
-      );
+      if (fileUrl){
+        console.log("file url:" + fileUrl);
+        extractText(fileUrl).then(
+          function (text) {
+            console.log('Extracted text:\n' + text);
+          },
+          function (reason) {
+            console.error(reason);
+          },
+        );
+      }
     }
   }, [submittedData,fileUrl]);
 
   // Uncomment this if you want to show a loading component after submission
-  // if (isFormSubmitted) { return (<Loading />); }
+  //if (isFormSubmitted) { return (<Loading />); }
+  if (isFormSubmitted) { 
+    return (
+      <div className="app-container">
+        <Quiz 
+          setIsFormSubmitted={setIsFormSubmitted} 
+          setParagraph={setParagraph} 
+          setFileContent={setFileContent} 
+          setFileUrl={setFileUrl}
+          setSubmittedData={setSubmittedData}
+          setSubmitMessage={setSubmitMessage}
+        />
+      </div>
+    ); }
 
   return (
     <div className="container">
