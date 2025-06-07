@@ -23,7 +23,7 @@ public class VoiceService {
     @Value("${app.api.voice-url}")
     private String VOICE_URL;
 
-    @Value("${voice-storage-path}")
+    @Value("${app.api.voice-storage-path}")
     private String VOICE_STORAGE_PATH;
 
     private final RestTemplate restTemplate;
@@ -42,6 +42,7 @@ public class VoiceService {
         byte[] audioData = restTemplate.getForObject(
                 VOICE_URL + "?text=" + encodeText(text) + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
                 byte[].class);
+
 
         // Save to filesystem
         Files.write(filePath, audioData);

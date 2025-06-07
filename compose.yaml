@@ -1,0 +1,18 @@
+
+services:
+  tts:
+    image: ghcr.io/coqui-ai/tts
+    ports:
+      - "5002:5002"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    entrypoint: >
+      bash -c "
+        python3 TTS/server/server.py --model_name tts_models/en/vctk/vits --use_cuda true
+      "
+    stdin_open: true
+    tty: true
+    restart: "no"
