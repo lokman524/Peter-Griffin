@@ -46,7 +46,6 @@ public class VoiceService {
 
         // Save to filesystem
         Files.write(filePath, audioData);
-
         return filename;
     }
 
@@ -62,6 +61,12 @@ public class VoiceService {
     private String encodeText(String text) {
         // URL encode the text to handle special characters
         return java.net.URLEncoder.encode(text, StandardCharsets.UTF_8);
+    }
+
+    public void deleteAudioFromList(List<String> list) throws IOException{
+        for (String i : list){
+            Files.delete(Path.of(VOICE_STORAGE_PATH + "/" + i));
+        }
     }
 
 }

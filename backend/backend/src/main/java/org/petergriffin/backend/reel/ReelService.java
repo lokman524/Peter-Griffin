@@ -2,6 +2,10 @@ package org.petergriffin.backend.reel;
 
 import org.petergriffin.backend.dialogue.DialogueService;
 import org.petergriffin.backend.prompt.Prompt;
+import org.petergriffin.backend.sequence.Sequence;
+import org.petergriffin.backend.sequence.SequenceElement;
+import org.petergriffin.backend.video.Video;
+import org.petergriffin.backend.voice.Pause;
 import org.petergriffin.backend.voice.Voice;
 import org.petergriffin.backend.voice.VoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,28 +40,26 @@ public class ReelService {
         List<String> DialogueResult = dialogueService.GenerateDialogues(prompt);
         //TODO: Generate Voice
 
+        Video video = new Video();
         List<String> VoiceList = new ArrayList<>();
 
         for (String i : DialogueResult){
             if(!i.contains("*WAIT FOR RESPONSE*")){
-                VoiceList.add(voiceService.getVoice(i));
+                File audioFile = new File(voiceService.getVoice(i));
+                if(audioFile.exists()){
+                    video.addAudioToSequence(new Voice(audioFile, i));
+                    VoiceList.add(i);
+                }
+            }else{
+                video.addPauseToSequence();
             }
         }
 
-        for (String i : VoiceList){
-            System.out.println(i);
-        }
+
 
         //TODO: Generate Video
 
-
-
-        //Delete the Audio file to free up space
-        for (String filename : VoiceList){
-            Files.delete(Path.of(VOICE_STORAGE_PATH + "/" + filename));
-        }
-
-        return new Reel(DialogueResult, VoiceList );
+        return new Reel(DialogueResult, VoiceList, video);
     }
 
 }
