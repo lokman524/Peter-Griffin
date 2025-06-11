@@ -7,6 +7,7 @@ import org.petergriffin.backend.sequence.WordSequenceElement;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Voice {
 
@@ -21,19 +22,17 @@ public class Voice {
     }
 
     private WordSeqence getWordTimeStamps(File audioFile, String transcript) throws IOException {
-        // Execute Python script with Vosk/Whisper/Gentle
         ProcessBuilder pb = new ProcessBuilder(
                 "python",
-                "align_audio.py",
-                audioFile.getAbsolutePath(),
-                transcript
+                "/app/python/whisper_aligner.py",
+                audioFile.getAbsolutePath()
         );
 
         Process process = pb.start();
-        String output = new String(process.getInputStream().readAllBytes());
+        String jsonOutput = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
-        // Parse JSON output
-        return parseAlignmentOutput(output);
+        // Parse JSON output to List<WordTimestamp>
+        return parseAlignmentOutput(jsonOutput);
     }
 
     //Format: Word/start_time/end
