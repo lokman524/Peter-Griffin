@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Video from "./Video"
 import Results from "./results";
 import "./Quiz.css";
 
@@ -76,6 +77,7 @@ function Quiz ({
 
     return (
         <div>
+            <Video />
             <h2>Question {currentQuestion+1}</h2>
             <p className="question">{questionBank[currentQuestion].question}</p>
             {questionBank[currentQuestion].options.map((option) => {
@@ -85,7 +87,6 @@ function Quiz ({
                 <button onClick={goToPrev} disabled={currentQuestion === 0} >Previous</button>
                 <button onClick={goToNext} disabled={selectedAnswer === null}>{currentQuestion === questionBank.length - 1 ? "Finish Quiz" : "Next"}</button>
             </div>
-
         </div>
 
     )
