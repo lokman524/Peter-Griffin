@@ -4,9 +4,8 @@ import sys
 import os
 
 def get_word_timestamps(audio_path):
-    print(os.listdir())
     model = whisper.load_model("base")
-    result = model.transcribe('audio.wav', word_timestamps=True)
+    result = model.transcribe(audio_path, word_timestamps=True)
 
     words = ""
     for segment in result["segments"]:

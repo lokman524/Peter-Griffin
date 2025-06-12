@@ -3,6 +3,10 @@ package org.petergriffin.backend.sequence;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Sequence could either be pause or a segment of an audio
+ */
 public class Sequence{
 
     private List<SequenceElement> SequenceElements = new ArrayList<SequenceElement>();

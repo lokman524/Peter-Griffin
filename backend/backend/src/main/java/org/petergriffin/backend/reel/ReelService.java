@@ -2,20 +2,12 @@ package org.petergriffin.backend.reel;
 
 import org.petergriffin.backend.dialogue.DialogueService;
 import org.petergriffin.backend.prompt.Prompt;
-import org.petergriffin.backend.sequence.Sequence;
-import org.petergriffin.backend.sequence.SequenceElement;
 import org.petergriffin.backend.video.Video;
-import org.petergriffin.backend.voice.Pause;
 import org.petergriffin.backend.voice.Voice;
 import org.petergriffin.backend.voice.VoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,28 +28,39 @@ public class ReelService {
     @Value("${app.api.voice-storage-path}")
     private String VOICE_STORAGE_PATH;
 
-    public Reel createReel(Prompt prompt) throws IOException {
+    public Reel createReel(Prompt prompt) throws IOException{
         List<String> DialogueResult = dialogueService.GenerateDialogues(prompt);
         //TODO: Generate Voice
 
         Video video = new Video();
         List<String> VoiceList = new ArrayList<>();
+        List<String> AudioFiles = new ArrayList<>();
 
         for (String i : DialogueResult){
-            if(!i.contains("*WAIT FOR RESPONSE*")){
+            if(!i.contains("*")){
                 File audioFile = new File(voiceService.getVoice(i));
                 if(audioFile.exists()){
-                    video.addAudioToSequence(new Voice(audioFile, i));
-                    VoiceList.add(i);
+                    try{
+                        video.addAudioToSequence(new Voice(audioFile, i));
+                        VoiceList.add(i);
+                        AudioFiles.add(audioFile.getName());
+                    }catch (Exception e){
+                        Files.delete(audioFile.toPath());
+                        System.out.println("Error From probably voice shi: " + e.getMessage());
+                        for (StackTraceElement k : e.getStackTrace()){
+                            System.out.println(k.toString());
+                        }
+                    }
                 }
             }else{
                 video.addPauseToSequence();
             }
         }
 
-
-
         //TODO: Generate Video
+        for (String file : AudioFiles){
+            Files.delete(Path.of(VOICE_STORAGE_PATH + "/" + file));
+        }
 
         return new Reel(DialogueResult, VoiceList, video);
     }

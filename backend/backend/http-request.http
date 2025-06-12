@@ -1,4 +1,5 @@
 
+# @timeout 10m
 POST http://localhost:8080/api/v1/reel/generate_reel
 Content-Type: application/json
 

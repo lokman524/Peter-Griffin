@@ -15,4 +15,8 @@ public class WordSeqence {
         wordSequenceElements.add(wordSequenceElement);
     }
 
+    public List<WordSequenceElement> getWordSequenceElements() {
+        return wordSequenceElements;
+    }
+
 }

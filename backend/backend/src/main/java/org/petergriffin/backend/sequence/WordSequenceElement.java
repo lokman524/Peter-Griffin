@@ -3,21 +3,21 @@ package org.petergriffin.backend.sequence;
 public class WordSequenceElement {
 
     private final String word;
-    private final int start;
-    private final int end;
+    private final float start;
+    private final float end;
 
 
-    public WordSequenceElement(String word, int start, int end) {
+    public WordSequenceElement(String word, float start, float end) {
         this.word = word;
         this.start = start;
         this.end = end;
     }
 
-    public int getStart() {
+    public float getStart() {
         return start;
     }
 
-    public int getEnd() {
+    public float getEnd() {
         return end;
     }
 

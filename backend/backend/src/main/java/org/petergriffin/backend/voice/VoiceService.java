@@ -38,15 +38,23 @@ public class VoiceService {
         String filename = UUID.randomUUID().toString() + ".mp3";
         Path filePath = Paths.get(VOICE_STORAGE_PATH, filename);
 
+        byte[] audioData;
+
         // Call TTS API
-        byte[] audioData = restTemplate.getForObject(
-                VOICE_URL + "?text=" + encodeText(text) + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
-                byte[].class);
+        try{
+            audioData = restTemplate.getForObject(
+                    VOICE_URL + "?text=" + encodeText(text) + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
+                    byte[].class);
 
+            // Save to filesystem
+                Files.write(filePath, audioData);
+                return filename;
+        }catch (Exception e){
+            System.out.println("Could not connect to Server!");
+        }
 
-        // Save to filesystem
-        Files.write(filePath, audioData);
-        return filename;
+        return null;
+
     }
 
 

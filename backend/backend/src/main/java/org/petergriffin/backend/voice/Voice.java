@@ -4,6 +4,7 @@ import org.petergriffin.backend.sequence.Sequence;
 import org.petergriffin.backend.sequence.SequenceElement;
 import org.petergriffin.backend.sequence.WordSeqence;
 import org.petergriffin.backend.sequence.WordSequenceElement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,43 +15,63 @@ public class Voice {
     private final File audioFile;
     private final String transcription;
     private WordSeqence wordSeqence;
+    /**
+     * Word Sequence will be in the following format:
+     * [{
+     *     content: word to be transcribed,
+     *     start: local start time
+     *     end: local end time
+     * }]
+     */
 
-    public Voice( File audioFile, String transcription) throws IOException {
+    public Voice( File audioFile, String transcription) throws IOException, InterruptedException {
         this.audioFile = audioFile;
         this.transcription = transcription;
         wordSeqence = getWordTimeStamps(audioFile, transcription);
     }
 
-    private WordSeqence getWordTimeStamps(File audioFile, String transcript) throws IOException {
+    private WordSeqence getWordTimeStamps(File audioFile, String transcript) throws IOException, InterruptedException {
+
+        // process builder will run the venv and the script at the same time
         ProcessBuilder pb = new ProcessBuilder(
+                ".\\venv\\Scripts\\activate.bat",
+                "&&" ,
                 "python",
-                "/app/python/whisper_aligner.py",
+                "src/main/python/whisper_aligner.py",
                 audioFile.getAbsolutePath()
         );
 
+        pb.redirectErrorStream(true);
         Process process = pb.start();
-        String jsonOutput = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+        int exitCode = process.waitFor();
+        String output = new String(process.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
+        System.out.println("Output from Python Aligner with exit code "+ exitCode+" :\n" + output);
 
         // Parse JSON output to List<WordTimestamp>
-        return parseAlignmentOutput(jsonOutput);
+        return parseAlignmentOutput(output);
     }
 
     //Format: Word/start_time/end
     private WordSeqence parseAlignmentOutput(String output) {
         String[] lines = output.split("\n");
         WordSeqence result  = new WordSeqence();
-        for (String i : lines){
-            String[] wordData = i.split("/");
+        //starts from line 2
+        for (int i = 2; i < lines.length ; i++){
+            String[] wordData = lines[i].split("/");
+            if (wordData.length < 3){
+                break;
+            }
+            System.out.println("Processing: " + lines[i]);
             result.addToWordSequence(new WordSequenceElement(
                     wordData[0],
-                    Integer.parseInt(wordData[1]),
-                    Integer.parseInt(wordData[2])
+                    Float.parseFloat(wordData[1]),
+                    Float.parseFloat(wordData[2])
             ));
         }
 
         return result;
     }
-
 
     public File getAudioFile() {
         return audioFile;

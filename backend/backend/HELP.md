@@ -20,3 +20,8 @@ These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
+```
+pip install -U openai-whisper
+sudo apt update && sudo apt install ffmpeg
+pip install setuptools-rust
+```

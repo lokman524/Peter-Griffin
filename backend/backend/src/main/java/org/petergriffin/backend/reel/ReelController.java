@@ -19,7 +19,7 @@ public class ReelController {
     }
 
     @PostMapping(path = "/generate_reel")
-    public Reel generateReel(@RequestBody Prompt prompt) throws IOException {
+    public Reel generateReel(@RequestBody Prompt prompt) throws IOException, InterruptedException {
         Reel result = reelService.createReel(prompt); //Notes be received from the body of the API call
         return result;
     }
