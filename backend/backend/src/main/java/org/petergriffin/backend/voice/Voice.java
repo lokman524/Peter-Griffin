@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class Voice {
 
     private final File audioFile;
     private final String transcription;
     private WordSeqence wordSeqence;
+    private byte[] audioData;
     /**
      * Word Sequence will be in the following format:
      * [{
@@ -27,10 +30,16 @@ public class Voice {
     public Voice( File audioFile, String transcription) throws IOException, InterruptedException {
         this.audioFile = audioFile;
         this.transcription = transcription;
-        wordSeqence = getWordTimeStamps(audioFile, transcription);
+        wordSeqence = getWordTimeStamps(audioFile);
+
+        audioData = Files.readAllBytes(audioFile.toPath());
+
+        //Delete file after
+        Files.delete(audioFile.toPath());
+
     }
 
-    private WordSeqence getWordTimeStamps(File audioFile, String transcript) throws IOException, InterruptedException {
+    private WordSeqence getWordTimeStamps(File audioFile) throws IOException, InterruptedException {
 
         // process builder will run the venv and the script at the same time
         ProcessBuilder pb = new ProcessBuilder(
@@ -73,9 +82,9 @@ public class Voice {
         return result;
     }
 
-    public File getAudioFile() {
-        return audioFile;
-    }
+//    public File getAudioFile() {
+//        return audioFile;
+//    }
 
     public String getTranscription() {
         return transcription;
@@ -88,4 +97,10 @@ public class Voice {
     public void setWordSeqence(WordSeqence wordSeqence) {
         this.wordSeqence = wordSeqence;
     }
+
+    public byte[] getAudioData() {
+        return audioData;
+    }
+
+
 }

@@ -50,7 +50,7 @@ public class VoiceService {
                 Files.write(filePath, audioData);
                 return filename;
         }catch (Exception e){
-            System.out.println("Could not connect to Server!");
+            System.out.println(e.getMessage() + "\n" + e.getStackTrace().toString());
         }
 
         return null;
