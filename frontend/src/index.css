@@ -1,0 +1,15 @@
+/* fonts */
+/* Irish Grover */
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
+/* Jacques Francois Shadow */
+@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Jacques+Francois+Shadow&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* tailwind v3 is used because i cant figure out what went wrong with v4 */
+@theme {
+    --font-irish-grover: 'Irish Grover', system-ui;
+    --font-jacques-francois-shadow: 'Jacques Francois Shadow', serif;
+}

@@ -1,10 +1,12 @@
+@import "tailwindcss";
+
 * {
     box-sizing: border-box;
   }
   body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f7fa;
+    background: #E6E6E6;
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -21,7 +23,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   .container {
-    background: white;
+    background: #fff;
     max-width: 600px;
     width: 100%;
     padding: 30px 40px;
@@ -42,7 +44,6 @@
   }
   label {
     font-weight: 600;
-    margin-bottom: 8px;
     color: #34495e;
     display: block;
   }
@@ -69,17 +70,14 @@
   }
   button {
     cursor: pointer;
-    background: #2ecc71;
-    border: none;
+    background: #414141;
+    
     color: white;
     font-weight: 700;
     padding: 14px;
     font-size: 1.1rem;
     border-radius: 10px;
     transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background: #27ae60;
   }
 
   @media (max-width: 480px) {

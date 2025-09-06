@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./InputForm.css";
 import Loading from "./Loading";
 import Quiz from "./Quiz";
+import Welcome from "./Welcome";
 import * as pdfjsLib from 'https://mozilla.github.io/pdf.js/build/pdf.mjs';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.mjs';
 
 function InputForm() {
+  const [getStarted, setGetStarted] = useState(false);
+
   const [paragraph, setParagraph] = useState("");
   const [fileContent, setFileContent] = useState(null);
   const [submittedData, setSubmittedData] = useState(null);
@@ -102,36 +105,46 @@ function InputForm() {
       </div>
     ); }
 
+  if (!getStarted) {
+    return (<Welcome setGetStarted={setGetStarted} />)
+  }
+  
   return (
-    <div className="container">
-      <h1>User Input Form</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="paragraphInput">Enter your paragraph:</label>
-        <textarea
-          id="paragraphInput"
-          value={paragraph}
-          onChange={handleParagraphChange}
-          placeholder="Type your paragraph here..."
-        />
+      <div className="container">
+        <div className="flex flex-row">
+          <h1>Upload your study materials and let Peter quiz you!</h1>
+          <img src="src/assets/peter-griffin1.png" className="mb-4 w-20" alt="Peter Griffin" />
+        </div>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="paragraphInput">Enter your paragraph:</label>
+          <textarea
+            id="paragraphInput"
+            value={paragraph}
+            onChange={handleParagraphChange}
+            placeholder="Type your paragraph here..."
+          />
 
-        <label htmlFor="fileUpload">Upload a file:</label>
-        <input
-          id="fileUpload"
-          type="file"
-          multiple
-          accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx"
-          onChange={handleFileChange}
-        />
+          <label htmlFor="fileUpload" className="text-white">Upload a file:</label>
+          <div className="border border-[#bdc3c7] rounded-lg p-2 bg-white">
+            <input
+              id="fileUpload"
+              type="file"
+              multiple
+              accept=".jpg,.jpeg,.png,.pdf,.ppt,.pptx,.doc,.docx"
+              onChange={handleFileChange}
+            />
+          </div>
+          
+          <button type="submit">Submit</button>
+        </form>
 
-        <button type="submit">Submit</button>
-      </form>
-
-      {submitMessage && (
-        <p style={{ marginTop: "20px", color: submitMessage.includes("successfully") ? "green" : "red" }}>
-          {submitMessage}
-        </p>
-      )}
-    </div>
+        {submitMessage && (
+          <p style={{ marginTop: "20px", color: submitMessage.includes("successfully") ? "green" : "red" }}>
+            {submitMessage}
+          </p>
+        )}
+      </div>
+    
   );
 }
 

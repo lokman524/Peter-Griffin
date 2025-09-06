@@ -1,8 +1,12 @@
 import InputForm from "./components/InputForm"
+import './index.css'
 
 function App() {
   return (
-    <InputForm />
+    <div className="min-h-screen">
+      <InputForm />
+    </div>
+      
   )
 }
 
