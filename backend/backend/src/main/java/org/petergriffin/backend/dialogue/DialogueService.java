@@ -114,7 +114,7 @@ public class DialogueService {
                 throw new Exception("Response code: " + responseCode + ", response: " + response);
             }
 
-            String prasedResposne = "";
+            String parsedResposne = "";
             ObjectMapper mapper = new ObjectMapper();
             Map<String, Object> jsonResponse = mapper.readValue(response.toString(), Map.class);
             List<Map<String, Object>> choices = (List<Map<String, Object>>) jsonResponse.get("choices");
@@ -122,12 +122,12 @@ public class DialogueService {
                 Map<String, Object> messageObj = (Map<String, Object>) choices.get(0).get("message");
                 String content = (String) messageObj.get("content");
                 System.out.println("Assistant Response: " + content);
-                prasedResposne = content;
+                parsedResposne = content;
             } else {
                 System.out.println("No choices found in response");
             }
 
-            List<String> dialogues = new ArrayList<>(Arrays.asList(response.toString().split("/")));
+            List<String> dialogues = new ArrayList<>(Arrays.asList(parsedResposne.toString().split("/")));
 
             // Close the connection
             conn.disconnect();

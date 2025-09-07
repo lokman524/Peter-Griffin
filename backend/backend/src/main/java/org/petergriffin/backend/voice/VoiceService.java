@@ -2,10 +2,7 @@ package org.petergriffin.backend.voice;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
@@ -41,9 +38,11 @@ public class VoiceService {
         byte[] audioData;
 
         // Call TTS API
+        System.out.println("Calling TTS with the following text:" + text);
+
         try{
             audioData = restTemplate.getForObject(
-                    VOICE_URL + "?text=" + encodeText(text) + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
+                    VOICE_URL + "?text=" + text + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
                     byte[].class);
 
             // Save to filesystem
