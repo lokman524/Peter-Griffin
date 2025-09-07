@@ -5,6 +5,7 @@ import jakarta.annotation.Resource;
 import org.petergriffin.backend.dialogue.DialogueService;
 import org.petergriffin.backend.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +65,7 @@ public class ReelController {
      */
     @PostMapping(path = "/generate_reel")
     public Reel generateReel(@RequestBody Prompt prompt){
+        System.out.println(prompt.getPromptContent());
         try{
             return reelService.createReel(prompt); //Notes be received from the body of the API call
         } catch (Exception e){

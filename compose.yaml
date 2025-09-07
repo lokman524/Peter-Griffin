@@ -1,5 +1,7 @@
 
 services:
+
+  # For the text to speech service for the backend to transcribe text to speech
   tts:
     image: ghcr.io/coqui-ai/tts
     ports:

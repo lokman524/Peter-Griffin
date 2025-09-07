@@ -29,7 +29,16 @@ public class ReelService {
     private String VOICE_STORAGE_PATH;
 
     public Reel createReel(Prompt prompt) throws IOException{
-        List<String> DialogueResult = dialogueService.GenerateDialogues(prompt);
+
+        //Generates the dialogue text based on the inputed prompt (i.e. the notes) and returned at a list of prompts
+        List<String> DialogueResult;
+        try {
+            DialogueResult = dialogueService.GenerateDialogues(prompt);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something is wrong with DialogueService");
+            throw new IOException(e.getMessage());
+        }
 
         //TODO: Generate Voice
         Video video = new Video();

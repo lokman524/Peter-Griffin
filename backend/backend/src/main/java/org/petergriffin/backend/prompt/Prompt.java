@@ -1,5 +1,8 @@
 package org.petergriffin.backend.prompt;
 
+/***
+ * Class for storing prompt contents including the user content and the system message
+ */
 public class Prompt {
 
     private String promptContent;

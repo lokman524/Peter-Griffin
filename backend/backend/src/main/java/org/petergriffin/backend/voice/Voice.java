@@ -27,6 +27,7 @@ public class Voice {
      * }]
      */
 
+
     public Voice( File audioFile, String transcription) throws IOException, InterruptedException {
         this.audioFile = audioFile;
         this.transcription = transcription;

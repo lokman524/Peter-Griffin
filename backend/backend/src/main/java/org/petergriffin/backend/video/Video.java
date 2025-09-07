@@ -10,6 +10,11 @@ import java.io.File;
 import java.util.*;
 import java.util.ArrayList;
 
+/***
+ * Contains the information of the video
+ * IMPORTANT: DOES NOT INCLUDE THE ACTUAL VIDEO MP4
+ * Only includes the sequence of the video as a list of pauses or audio
+ */
 public class Video {
 
     private Sequence sequence = new Sequence();
