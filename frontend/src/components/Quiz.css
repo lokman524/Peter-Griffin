@@ -94,6 +94,11 @@ h2 {
   background: #1e88e5;
 }
 
+.restart-button:disabled {
+  background: #a0c4e3;
+  cursor: not-allowed;
+}
+
 /* Score display styling */
 .score {
   font-size: 1.4em;

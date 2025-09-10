@@ -1,8 +1,8 @@
 /* fonts */
 /* Irish Grover */
-@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap');
 /* Jacques Francois Shadow */
-@import url('https://fonts.googleapis.com/css2?family=Irish+Grover&family=Jacques+Francois+Shadow&display=swap');
+/* Bebas Neue */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Irish+Grover&family=Jacques+Francois+Shadow&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -12,4 +12,5 @@
 @theme {
     --font-irish-grover: 'Irish Grover', system-ui;
     --font-jacques-francois-shadow: 'Jacques Francois Shadow', serif;
+    --font-bebas-neue: "Bebas Neue", sans-serif;
 }

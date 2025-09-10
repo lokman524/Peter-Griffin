@@ -80,6 +80,15 @@
     transition: background-color 0.3s ease;
   }
 
+  button:hover {
+    background: #1e88e5;
+  }
+
+  button:disabled {
+    background: #a0c4e3;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 480px) {
     .container {
       padding: 20px 25px;

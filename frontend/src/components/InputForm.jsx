@@ -89,20 +89,35 @@ function InputForm() {
     }
   }, [submittedData,fileUrl]);
 
-  // Uncomment this if you want to show a loading component after submission
-  //if (isFormSubmitted) { return (<Loading />); }
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    getDataFromBackend();
+  }, [submittedData])
+
+  async function getDataFromBackend() {
+    //set the state isLoading = true before making the network call
+    setIsLoading(true);
+    //make the network call here
+
+    //reset the state isLoading = false when network call has finished
+    setIsLoading(false);
+  }
+
   if (isFormSubmitted) { 
     return (
-      <div className="app-container">
-        <Quiz 
-          setIsFormSubmitted={setIsFormSubmitted} 
-          setParagraph={setParagraph} 
-          setFileContent={setFileContent} 
-          setFileUrl={setFileUrl}
-          setSubmittedData={setSubmittedData}
-          setSubmitMessage={setSubmitMessage}
-        />
-      </div>
+      isLoading 
+      ? <Loading /> 
+      : <div className="app-container">
+          <Quiz 
+            setIsFormSubmitted={setIsFormSubmitted} 
+            setParagraph={setParagraph} 
+            setFileContent={setFileContent} 
+            setFileUrl={setFileUrl}
+            setSubmittedData={setSubmittedData}
+            setSubmitMessage={setSubmitMessage}
+          />
+        </div>
     ); }
 
   if (!getStarted) {
