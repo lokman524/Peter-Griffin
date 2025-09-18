@@ -107,3 +107,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 - Coqui TTS for the text-to-speech engine
 - Mozilla's PDF.js for PDF text extraction
+
+### Default Enviornment Variables in Backend
+
+VOICE_URL = http://127.0.0.1:8000/get_voice
+STORAGE_PATH = "./"
