@@ -40,11 +40,13 @@ public class VoiceService {
         // Call TTS API
         System.out.println("Calling TTS with the following text:" + text);
 
-        try{
-            audioData = restTemplate.getForObject(
-                    VOICE_URL + "?text=" + text + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
-                    byte[].class);
+        Text body = new Text(text);
 
+        try{
+            audioData = restTemplate.postForEntity(
+                    VOICE_URL,
+                    body,
+                    byte[].class);
             // Save to filesystem
                 Files.write(filePath, audioData);
                 return filename;
