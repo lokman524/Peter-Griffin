@@ -2,6 +2,9 @@ package org.petergriffin.backend.voice;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -37,19 +40,24 @@ public class VoiceService {
 
         byte[] audioData;
 
+        String requestBody = "{\"text\":\""+ text + "\"}";
+
+        // Set headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer your-token-here");
+
+        // Create the HTTP entity with body and headers
+        HttpEntity<String> request = new HttpEntity<>(requestBody, headers);
+
         // Call TTS API
         System.out.println("Calling TTS with the following text:" + text);
 
-        Text body = new Text(text);
-
         try{
-            audioData = restTemplate.postForEntity(
-                    VOICE_URL,
-                    body,
-                    byte[].class);
+            audioData = restTemplate.postForObject(VOICE_URL, request, byte[].class);
             // Save to filesystem
-                Files.write(filePath, audioData);
-                return filename;
+            Files.write(filePath, audioData);
+            return filename;
         }catch (Exception e){
             System.out.println(e.getMessage() + "\n" + e.getStackTrace().toString());
         }

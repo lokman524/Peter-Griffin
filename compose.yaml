@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   tts-api:
     build:
-      context: .
+      context: ./voice_service
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
