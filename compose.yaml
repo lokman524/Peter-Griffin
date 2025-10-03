@@ -3,7 +3,7 @@ version: '3.8'
 services:
   tts-api:
     build:
-      context: .
+      context: ./voice_service
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
@@ -11,3 +11,19 @@ services:
       - ./output:/app/output
     environment:
       - PYTHONUNBUFFERED=1
+
+  backend:
+    build:
+      context: ./backend/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - VOICE_URL=http://tts-api:8000
+      - VOICE_STORAGE=/app/voice_storage
+      - OPENROUTER_TOKEN=${OPENROUTER_TOKEN}
+    volumes:
+      - ./voice_storage:/app/voice_storage
+    depends_on:
+      - tts-api
