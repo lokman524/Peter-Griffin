@@ -41,9 +41,13 @@ public class VoiceService {
         System.out.println("Calling TTS with the following text:" + text);
 
         try{
-            audioData = restTemplate.getForObject(
-                    VOICE_URL + "?text=" + text + "&speaker_id=p374&style_wav=&language_id= HTTP/1.1",
-                    byte[].class);
+            // Encode the text to handle special characters
+            String encodedText = encodeText(text);
+            String url = VOICE_URL + "?text=" + encodedText;
+            
+            System.out.println("Making request to URL: " + url);
+            
+            audioData = restTemplate.getForObject(url, byte[].class);
 
             // Save to filesystem
                 Files.write(filePath, audioData);
